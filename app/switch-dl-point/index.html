@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="format-detection" content="address=no,date=no,email=no,telephone=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>スイッチDLポイント計算</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col">
+            <h1 style="display:none">スイッチDLポイント計算</h1>
+            <p class="h3 text-center" style="margin-top:0.5em">スイッチDLポイント計算</p>
+            <p>スイッチのダウンロードソフトを購入する際、ゴールドポイントを使用しても付与ゴールドポイント数が変わらないように計算します。（※5％付与時）</p>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col">
+            <form method="get" action="#" id="form">
+                <div class="input-group">
+                    <input type="number" id="form-price" name="price" value="" min="1" max="999999" step="1" placeholder="税込価格（円）" data-default="" class="form-control" required>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">計算</button>
+                        <button type="button" id="button-reset" class="btn btn-secondary">リセット</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row justify-content-center" style="margin-top:1em">
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-center">
+                    税込価格
+                    <span><span id="shop-price" data-default="？">？</span>円</span>
+                </li>
+                <li class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-center">
+                    付与ゴールドポイント
+                    <span>＋<span id="shop-point" data-default="？">？</span></span>
+                </li>
+                <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">
+                    使用ゴールドポイント
+                    <span id="use-point" data-default="？">？</span>
+                </li>
+                <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">
+                    支払金額
+                    <span><span id="use-money" data-default="？">？</span>円</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<!-- Advisor -->
+<script>
+(function($, doc){
+    $(doc).ready(function(){
+        var $formPrice = $("#form-price");
+        var $shopPrice = $("#shop-price");
+        var $shopPoint = $("#shop-point");
+        var $usePoint  = $("#use-point");
+        var $useMoney  = $("#use-money");
+
+        var draw = function(formPrice, shopPrice, shopPoint, usePoint, useMoney){
+            $formPrice.val(formPrice);
+            $shopPrice.text(shopPrice);
+            $shopPoint.text(shopPoint);
+            $usePoint.text(usePoint);
+            $useMoney.text(useMoney);
+        };
+
+        $("#form").submit(function(){
+            var formPrice = $formPrice.val();
+            var shopPrice = formPrice;
+            var shopPoint = Math.ceil(shopPrice * 0.05);
+            var useMoney  = (shopPoint - 1) * 20 + 1;
+            var usePoint  = shopPrice - useMoney;
+            draw(formPrice, shopPrice, shopPoint, usePoint, useMoney);
+            return false;
+        });
+
+        $("#button-reset").click(function(){
+            var formPrice = $formPrice.data("default");
+            var shopPrice = $shopPrice.data("default");
+            var shopPoint = $shopPoint.data("default");
+            var useMoney  = $usePoint.data("default");
+            var usePoint  = $useMoney.data("default");
+            draw(formPrice, shopPrice, shopPoint, usePoint, useMoney);
+            return false;
+        });
+    });
+})(jQuery, document);
+</script>
+</body>
+</html>
