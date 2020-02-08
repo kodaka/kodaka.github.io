@@ -57,8 +57,8 @@
                     実質割引価格
                     <span><span id="real-price" data-default="？">？</span>円</span>
                 </li>
-                <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">
-                    現金割引だった場合の価格
+                <li class="list-group-item list-group-item-info d-flex justify-content-between align-items-center">
+                    現金割引率だった場合の価格
                     <span><span id="money-price" data-default="？">？</span>円</span>
                 </li>
             </ul>
@@ -76,16 +76,16 @@
 <script>
 (function($, doc){
     $(doc).ready(function(){
-        var $formPrice   = $("#form-price");
-        var $formPercent = $("#form-percent");
-        var $shopPrice   = $("#shop-price");
-        var $shopPercent = $("#shop-percent");
-        var $shopPoint   = $("#shop-point");
-        var $realPercent = $("#real-percent");
-        var $realPrice   = $("#real-price");
-        var $moneyPrice  = $("#money-price");
+        let $formPrice   = $("#form-price");
+        let $formPercent = $("#form-percent");
+        let $shopPrice   = $("#shop-price");
+        let $shopPercent = $("#shop-percent");
+        let $shopPoint   = $("#shop-point");
+        let $realPercent = $("#real-percent");
+        let $realPrice   = $("#real-price");
+        let $moneyPrice  = $("#money-price");
 
-        var draw = function(formPrice, formPercent, shopPrice, shopPercent, shopPoint, realPercent, realPrice, moneyPrice){
+        let draw = function(formPrice, formPercent, shopPrice, shopPercent, shopPoint, realPercent, realPrice, moneyPrice){
             $formPrice.val(formPrice);
             $formPercent.val(formPercent);
             $shopPrice.text(shopPrice);
@@ -97,28 +97,29 @@
         };
 
         $("#form").submit(function(){
-            var formPrice   = parseInt($formPrice.val());
-            var formPercent = parseInt($formPercent.val());
-            var shopPrice   = formPrice;
-            var shopPercent = formPercent;
-            var shopPoint   = Math.ceil(shopPrice * shopPercent / 100);
-            var realRate    = shopPrice / (shopPrice + shopPoint);
-            var realPercent = Math.round((1 - realRate) * 100 * 1000) / 1000;
-            var realPrice   = Math.floor(shopPrice * realRate);
-            var moneyPrice  = Math.floor(shopPrice * (100 - shopPercent) / 100);
+            let formPrice   = parseInt($formPrice.val());
+            let formPercent = parseInt($formPercent.val());
+            let shopPrice   = formPrice;
+            let shopPercent = formPercent;
+            let shopPoint   = Math.ceil(shopPrice * shopPercent / 100);
+            let realRate    = shopPrice / (shopPrice + shopPoint);
+            let realPercent = Math.round((1 - realRate) * 100 * 1000) / 1000;
+            let realPrice   = Math.floor(shopPrice * realRate);
+            let moneyPrice  = Math.floor(shopPrice * (100 - shopPercent) / 100);
             draw(formPrice, formPercent, shopPrice, shopPercent, shopPoint, realPercent, realPrice, moneyPrice);
             return false;
         });
 
         $("#button-reset").click(function(){
-            var formPrice   = $formPrice.data("default");
-            var formPercent = $formPercent.data("default");
-            var shopPrice   = $shopPrice.data("default");
-            var shopPercent = $shopPercent.data("default");
-            var shopPoint   = $shopPoint.data("default");
-            var realPercent = $realPercent.data("default");
-            var realPrice   = $realPrice.data("default");
-            var moneyPrice  = $moneyPrice.data("default");
+            const dataKey   = "default";
+            let formPrice   = $formPrice.data(dataKey);
+            let formPercent = $formPercent.data(dataKey);
+            let shopPrice   = $shopPrice.data(dataKey);
+            let shopPercent = $shopPercent.data(dataKey);
+            let shopPoint   = $shopPoint.data(dataKey);
+            let realPercent = $realPercent.data(dataKey);
+            let realPrice   = $realPrice.data(dataKey);
+            let moneyPrice  = $moneyPrice.data(dataKey);
             draw(formPrice, formPercent, shopPrice, shopPercent, shopPoint, realPercent, realPrice, moneyPrice);
             return false;
         });
